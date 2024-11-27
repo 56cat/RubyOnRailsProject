@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="">
+<%= render 'layouts/head' %>
+<body>
+<%= render 'layouts/alert.html.erb' %>
+
+<div id="wrapper">
+   <%= render "layouts/nav/#{current_user.role}" %>
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <%= render 'layouts/header' %>
+      <div class="container-fluid">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render 'layouts/modal' %>
+</body>
+<script>
+    $(document).on('turbolinks:load', function () {
+        $("input[type=text].currency").inputmask("numeric", {
+            radixPoint: ".",
+            groupSeparator: ",",
+            digits: 0,
+            autoGroup: true,
+            prefix: '',
+            rightAlign: false,
+            removeMaskOnSubmit: true,
+            clearMaskOnLostFocus: true,
+        });
+        $(document).on('blur','.search-field', function(){
+            let form =  $(this).closest("form")
+            setTimeout(function () {
+                form.find('.submit-form').trigger('click');
+            },200)
+        })
+        $(document).on("change",'#show-limit, .filter-select', function () {
+            $(this).closest("form").find('.submit-form').trigger('click');
+        })
+
+        $('.datepicker').each(function () {
+            let startDate = $(this).data('start-date')
+            let endDate =  $(this).data('end-date')
+            $(this).datepicker({
+                format: "dd/mm/yyyy",
+                language: "vi",
+                startDate: startDate,
+                endDate: endDate
+            })
+        })
+      $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+          $("body").toggleClass("sidebar-toggled");
+          $(".sidebar").toggleClass("toggled");
+          if ($(".sidebar").hasClass("toggled")) {
+              $('.sidebar .collapse').collapse('hide');
+          };
+      });
+
+      // Close any open menu accordions when window is resized below 768px
+      $(window).resize(function() {
+          if ($(window).width() < 768) {
+              $('.sidebar .collapse').collapse('hide');
+          };
+
+          // Toggle the side navigation when window is resized below 480px
+          if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
+              $("body").addClass("sidebar-toggled");
+              $(".sidebar").addClass("toggled");
+              $('.sidebar .collapse').collapse('hide');
+          };
+      });
+
+      // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+      $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
+          if ($(window).width() > 768) {
+              var e0 = e.originalEvent,
+                  delta = e0.wheelDelta || -e0.detail;
+              this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+              e.preventDefault();
+          }
+      });
+
+      // Scroll to top button appear
+
+      // Smooth scrolling using jQuery easing
+      $(document).on('click', 'a.scroll-to-top', function(e) {
+          var $anchor = $(this);
+          $('html, body').stop().animate({
+              scrollTop: ($($anchor.attr('href')).offset().top)
+          }, 1000, 'easeInOutExpo');
+          e.preventDefault();
+      });
+
+  })
+
+</script>
+</html>

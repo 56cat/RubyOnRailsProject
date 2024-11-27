@@ -1,0 +1,21 @@
+@import "./vendor/bootstrap/scss/bootstrap.scss";
+
+body {
+  .alwaysbreak {
+    page-break-before: always;
+  }
+
+  .nobreak:before {
+    clear:both;
+  }
+
+  .nobreak {
+    page-break-inside: avoid;
+  }
+  .image-chart {
+    width: 100%
+  }
+  .row {
+    display: -webkit-box;
+  }
+}

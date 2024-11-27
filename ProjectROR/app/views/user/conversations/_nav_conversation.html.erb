@@ -1,0 +1,29 @@
+<ul class="list-unstyled chat-list mt-2 mb-0">
+  <% if @conversations.present? %>
+    <% @conversations.each do |conversation| %>
+      <%= link_to user_conversation_path(conversation) do %>
+        <li class="clearfix <%= 'active' if conversation.id == @conversation&.id %>">
+          <div class='row'>
+            <div class="col-3">
+              <img src="https://www.freeiconspng.com/uploads/retail-shop-icon-3.png" width="350" alt="Retail shop Icon"/>
+            </div>
+            <div class="about col-8">
+              <div class="name">
+                <strong><%= conversation.brand.name %></strong>
+              </div>
+              <div class="status">
+                <small><%= conversation.messages&.first&.user_id == current_user.id ? "Bạn: " : "" %><%= conversation.messages&.first&.content %></small>
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+      <% end %>
+    <% end %>
+  <% else %>
+    <li class="clearfix">
+      <strong>Chưa có cuộc hội thoại</strong>
+    </li>
+  <% end %>
+</ul>

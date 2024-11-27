@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container px-4 px-lg-5">
+    <%= link_to 'Trang chủ', user_products_path, class: 'navbar-brand'%>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+      </ul>
+      <%= link_to user_line_items_path do %>
+        <button class="btn btn-outline-dark" type="submit">
+          <i class="fa-solid fa-cart-shopping"></i>
+          Giỏ hàng
+          <span class="badge bg-danger text-white ms-1 rounded-pill" id='cart-total'><%= current_user.line_items.where(bill_id: nil).size %></span>
+        </button>
+      <% end %>
+      <%= link_to user_deliveries_path do %>
+        <button class="btn btn-outline-dark ml-2" type="submit">
+          <i class="fa-solid fa-truck"></i>
+          Đơn hàng
+          <span class="badge bg-danger text-white ms-1 rounded-pill" id="delivery-total"><%= current_user.deliveries.where.not(status: ['received', 'cancelled']).size %></span>
+        </button>
+      <% end %>
+      <%= link_to user_conversations_path do %>
+        <button class="btn btn-outline-dark ml-2" type="submit">
+          <i class="fa-solid fa-comments"></i>
+          Đoạn chat
+          <span class="badge bg-danger text-white ms-1 rounded-pill" id="delivery-total"><%= current_user.conversations.size %></span>
+        </button>
+      <% end %>
+    </div>
+  </div>
+  <ul class="navbar-nav">
+      <%= render 'layouts/info_user' %>
+  </ul>
+</nav>
+<!-- Header-->

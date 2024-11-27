@@ -1,0 +1,47 @@
+<%= form_for [:supplier, ExportNote.new] do |uf| %>
+  <div class='card mt-3'>
+    <div class='card-body'>
+      <h5>Thông tin chung</h5>
+      <div class='form-group'>
+        <div class='col-12'>
+           <%= uf.label :kind, "Loại phiếu"%>
+          <%= uf.select :kind, ExportNote.kinds.map{|k,v| ["#{t("note.kind.#{k}")}",k]}, {}, {class: 'form-control'}  %>    
+          <%= uf.label :note, "Ghi chú" %>
+          <%= uf.text_area :note, class: 'form-control' %>
+          <%= uf.hidden_field :user_id, value: current_user.id %>
+          <%= uf.hidden_field :brand_id, value:current_brand.id %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='list-product-import'>
+    <%= uf.fields_for :import_export_histories do |f| %>
+      <%= render partial: 'supplier/import_export_histories/import_export_history_fields', locals: {
+        f: f
+      } %>
+    <% end %>
+  </div>
+
+  <%= link_to_add_association ("<i class='fa fa-plus-circle' aria-hidden='true'></i>Thêm sản phẩm").html_safe,
+                              uf,
+                              :import_export_histories,
+                              class: "d-block mt-3",
+                              'data-association-insertion-node' => '.list-product-import',
+                              partial: 'supplier/import_export_histories/import_export_history_fields',
+                              'data-association-insertion-method' => 'append',
+                              render_options: {
+                                locals: {
+                                  action_note: 'import_product'
+                                }}
+  %>
+  <div class="card">
+    <div class='card-body'>
+      <div class=' d-flex align-items-center justify-content-center'>
+        <%= uf.submit "Tạo mới", class: 'btn btn-success' %>
+        <%= link_to 'Hủy', supplier_inventory_products_path, class: 'btn btn-secondary mx-3', data: { confirm: 'Bạn có chắc không' } %>
+      </div>
+    </div>
+  </div>
+
+<% end %>

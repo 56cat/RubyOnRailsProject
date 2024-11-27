@@ -1,0 +1,11 @@
+<div class='card'>
+  <div class='card-body'>
+    <h4>Danh sách đơn hàng</h4>
+    <%= render partial: 'shared/table',
+               locals: {
+                 records: @deliveries,
+                 namespace: controller.class.module_parent,
+                 default_query: @default_query
+               } %>
+  </div>
+</div>

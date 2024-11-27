@@ -1,0 +1,15 @@
+<% if params[:page].present? %>
+var old_height = $('#chat-messages .list').height();
+var old_scroll = $('#chat-messages').scrollTop();
+$('#chat-messages .list').prepend('<%= j render partial: 'shared/bubble_chat_message' %>');
+<% if @messages.next_page %>
+$('#chat-messages .pagination').replaceWith('<%= j paginate @messages %>');
+$('#chat-messages').scrollTop(old_scroll + $('#chat-messages .list').height() - old_height)
+<% else %>
+$('.pagination').remove();
+<% end %>
+<% else %>
+  $('#chatview').html('<%= j render partial: 'shared/bubble_chat_content' %>');
+  $('#chat-messages').scrollTop($("#chat-messages")[0].scrollHeight);
+<% end %>
+

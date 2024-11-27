@@ -1,0 +1,32 @@
+<div class='card'>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h2>Danh sách sản phẩm</h2>
+      </div>
+      <div class="col-6 d-flex justify-content-end align-items-center">
+        <div class="dropdown">
+          <button class="btn btn-danger dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-download mr-2"></i>Xuất
+          </button>
+          <div class="dropdown-menu" aria-labelledby="exportDropdown">
+            <%= link_to export_supplier_products_path(format: :csv), class: 'dropdown-item', onclick: "$('#exportModal').modal('hide')" do %>
+              Export CSV
+            <% end %>
+            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#exportModal" onclick="$('#exportModal').modal('hide')">
+              Export Modal
+            </button>
+          </div>
+        </div>
+      </div>
+      <%= render "modal_form" %>
+    </div>
+    <%= render partial: 'shared/table',
+               locals: {
+                 records: @products,
+                 namespace: controller.class.module_parent,
+                 default_query: @default_query
+               } %>
+
+  </div>
+</div>

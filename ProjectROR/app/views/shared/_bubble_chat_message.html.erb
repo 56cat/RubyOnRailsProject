@@ -1,0 +1,15 @@
+<% if  @messages.present? %>
+  <div class='list'>
+    <% @messages.reverse.each do |message| %>
+      <div class="message <%= (current_user.user? && message.user_id == current_user.id) || (current_user.supplier? && message.user.brand_id == current_brand.id) ? 'right' : ""  %>">
+        <div class="bubble">
+          <%= message.content %>
+          <div class="corner"></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div id="infinite-scrolling d-none" style="display: none">
+    <%= paginate @messages, theme: "twitter-bootstrap-3" %>
+  </div>
+<% end %>

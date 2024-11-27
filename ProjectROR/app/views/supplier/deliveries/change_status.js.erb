@@ -1,0 +1,7 @@
+alert("<%= @message.squish %>")
+
+$('#delivery<%= @delivery.id %> .delivery-status').html("<%= delivery_status(@delivery.status) %>")
+$('#current-status-delivery').html("<%= delivery_status(@delivery.status) %>")
+$('#delivery<%= @delivery.id %> .delivery-link-status').html('<%= link_to_status(current_user, @delivery) %>')
+$('#link-to-next-status-delivery').html('<%= link_to_status(current_user, @delivery) %>')
+$('#cancelModal').modal('hide')

@@ -1,0 +1,5 @@
+vi:
+  bill:
+    payment_method:
+      cod: Thanh toán khi nhận hàng
+      transfer: Chuyển khoản

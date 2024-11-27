@@ -1,0 +1,19 @@
+<% if @messages.present? %>
+  <% @messages.reverse.each do |message| %>
+    <li class="clearfix">
+      <div class="message <%= message.user_id == current_user.id ? " my-message float-right" : "other-message text-left" %>" data-toggle="tooltip" data-placement="right" title="<%= message.created_at.strftime('%H:%M, %d/%m/%Y') %>">
+        <%= message.content %>
+      </div>
+    </li>
+  <% end %>
+  <div id="infinite-scrolling d-none" style="display: none">
+    <%= paginate @messages, theme: "twitter-bootstrap-3" %>
+  </div>
+<% else %>
+  <li class="clearfix  text-center">
+    <strong class="">
+      Chưa có tin nhắn nào
+    </strong>
+  </li>
+<% end %>
+

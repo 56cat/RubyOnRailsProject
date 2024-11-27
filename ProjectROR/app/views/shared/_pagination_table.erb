@@ -1,0 +1,24 @@
+<% if defined?(records) && records.present? %>
+  <div class='row'>
+    <div class="col-6">
+      <%= search_form_for @search,
+                          url: search_path(
+                            model: records.klass.name,
+                            q: query,
+                            namespace: namespace),
+                          remote: true,
+                          method: :post do |f| %>
+        <%= select_tag :limit, options_from_collection_for_select(Settings.show_limit, :second, :second, selected: params[:limit] || Settings.show_limit.limit), id: "show-limit", style: "padding: 8px 16px;border-radius: 5px;" %>
+        <% if defined?(default_query) && default_query.present? %>
+          <% default_query.each do |k, v| %>
+            <%= f.hidden_field k, value: v %>
+          <% end %>
+        <% end %>
+        <%= f.submit "search", class: "btn btn-info submit-form", style: "display: none; margin-right: 10px" %>
+      <% end %>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <%= paginate records, remote: true, theme: 'twitter-bootstrap-3', params: { controller: '/search', action: 'search', model: records.klass.name, limit: params[:limit], namespace: namespace, q: query  } %>
+    </div>
+  </div>
+<% end %>

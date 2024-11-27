@@ -1,0 +1,49 @@
+<div class='card'>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4>Kho sản phẩm</h4>
+      </div>
+      <div class="col-6 d-flex justify-content-end align-items-center">
+        <div class='dropdown'>
+          <button class="btn btn-success dropdown-toggle" type="button" id="importDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-plus mr-2"></i>Thêm sản phẩm
+          </button>
+          <div class="dropdown-menu" aria-labelledby="importDropdown">
+            <%= link_to new_supplier_inventory_product_path, class: 'dropdown-item' do %>
+              Thủ công
+            <% end %>
+            <%= link_to import_supplier_inventory_products_path, class: 'dropdown-item' do %>
+              Thêm bằng CSV
+            <% end %>
+          </div>
+        </div>
+
+
+        <%= link_to export_supplier_inventory_products_path(format: :csv), class: 'btn btn-warning  mx-2' do %>
+          <i class="fa-solid fa-download"></i>  Tồn kho
+        <% end %>
+        <div class='dropdown' >
+          <button class="btn btn-danger mx-2 dropdown-toggle" type="button" id="exportNoteDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-minus mr-2"></i>Xuất/Nhập hàng
+          </button>
+          <div class="dropdown-menu" aria-labelledby="exportNoteDropdown">
+            <%= link_to new_supplier_export_note_path, class: 'dropdown-item' do %>
+              Thủ công
+            <% end %>
+            <%= link_to import_supplier_export_notes_path, class: 'dropdown-item' do %>
+              Xuất/nhập bằng file CSV
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <%= render partial: 'shared/table',
+               locals: {
+                 records: @inventory_products,
+                 namespace: controller.class.module_parent,
+                 default_query: @default_query
+               } %>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+vi:
+  import_export_product_history:
+    action:
+      import_product: Nhập
+      export_product: Xuất

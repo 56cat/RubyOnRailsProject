@@ -1,0 +1,99 @@
+<div class='card'>
+  <div class='card-body'>
+    <h4>Thống kê</h4>
+    <div class='row'>
+      <div class='col-6'>
+        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+          <i class="fa fa-calendar"></i>&nbsp;
+          <span></span> <i class="fa fa-caret-down"></i>
+        </div>
+      </div>
+      <div class='col-6 d-flex justify-content-end'>
+        <%= link_to '<i class="fa-solid fa-file-pdf"></i> Xuất file PDF'.html_safe,
+                    supplier_preview_pdf_file_path,
+                    class: 'btn btn-primary export-pdf',
+                    target: "_blank" %>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class='row mt-4'>
+  <div class='col-6'>
+    <div class='card'>
+      <div class='card-header'>
+        Đơn hàng
+      </div>
+      <div class='card-body'>
+        <canvas id="data_delivery" class='chart' data-chart="<%= @data_delivery.to_json %>"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='col-6'>
+    <div class='card'>
+      <div class='card-header'>
+        Tổng tiền
+      </div>
+      <div class='card-body'>
+        <canvas id="data_bill" class='chart' data-chart="<%= @data_bill.to_json %>"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        var start = moment().subtract(6, 'days');
+        var end = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+        }
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: {
+                customRangeLabel: "Tùy chỉnh",
+            },
+            ranges: {
+                '7 ngày qua': [moment().subtract(6, 'days'), moment()],
+                'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+                'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+
+        $('.chart').each(function () {
+            var ctx = $(this)[0].getContext('2d');
+            let data_chart = JSON.parse(ctx.canvas.dataset.chart)
+            new Chart(ctx, data_chart);
+        })
+
+        $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+            $('.export-pdf').attr('href', `<%= supplier_preview_pdf_file_path %>?start_date=${picker.startDate.format('YYYY-MM-DD')}&end_date=${picker.endDate.format('YYYY-MM-DD')}`)
+
+            $.ajax({
+                url: '<%= supplier_root_path %>',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    start_date: picker.startDate.format('YYYY-MM-DD'),
+                    end_date: picker.endDate.format('YYYY-MM-DD')
+                }
+            }).done(function (res){
+                $.each(res, function (key, data){
+                    let canvas = $(`canvas#${key}`)[0]
+                    let chart = Chart.getChart(canvas);
+                    chart.data.labels = data.data.labels
+                    chart.data.datasets = data.data.datasets
+                    chart.update()
+                })
+            })
+        });
+    })
+
+
+</script>
+

@@ -1,0 +1,10 @@
+$('.table-data').html('<%= escape_javascript(
+                                          render(partial: "shared/table_data",
+                                             locals: {
+                                               records: records,
+                                               namespace: namespace,
+                                               default_query: default_query,
+                                               query: query
+                                             })) %>')
+
+$("#search_form").attr('action', "<%= search_path(limit: limit || 5, model: records.klass.name, namespace: namespace) %>")

@@ -1,0 +1,55 @@
+<div class="container px-2 px-lg-5 mt-3">
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="all-delivery-tab" data-toggle="pill" href="#all-delivery" role="tab" aria-controls="all-delivery" aria-selected="true">
+        Tất cả
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " id="created-delivery-tab" data-toggle="pill" href="#created-delivery" role="tab" aria-controls="created-delivery" aria-selected="true">
+        Chờ xác nhận
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="verified-delivery-tab" data-toggle="pill" href="#verified-delivery" role="tab" aria-controls="verified-delivery" aria-selected="false">
+        Chờ lấy hàng
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="transport-delivery-tab" data-toggle="pill" href="#transport-delivery" role="tab" aria-controls="transport-delivery" aria-selected="false">
+        Đang giao
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="preceived-delivery-tab" data-toggle="pill" href="#received-delivery" role="tab" aria-controls="received-delivery" aria-selected="false">
+        Đã giao
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="cancelled-delivery-tab" data-toggle="pill" href="#cancelled-delivery" role="tab" aria-controls="cancelled-delivery" aria-selected="false">
+        Đã hủy
+      </a>
+    </li>
+  </ul>
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="all-delivery" role="tabpanel" aria-labelledby="all-delivery-tab">
+      <%= render partial: 'user/deliveries/view_detail_delivery', locals: {records: @deliveries}%>
+    </div>
+    <div class="tab-pane fade" id="created-delivery" role="tabpanel" aria-labelledby="created-delivery-tab">
+      <%= render partial: 'user/deliveries/view_detail_delivery', locals: {records: @deliveries.where(status: 'created')}%>
+    </div>
+    <div class="tab-pane fade" id="verified-delivery" role="tabpanel" aria-labelledby="verified-delivery-tab">
+      <%= render partial: 'user/deliveries/view_detail_delivery', locals: {records: @deliveries.where(status: ['verified', 'pickup'])}%>
+    </div>
+    <div class="tab-pane fade" id="transport-delivery" role="tabpanel" aria-labelledby="transport-delivery-tab">
+      <%= render partial: 'user/deliveries/view_detail_delivery', locals: {records: @deliveries.where(status: 'transport')}%>
+    </div>
+    <div class="tab-pane fade" id="received-delivery" role="tabpanel" aria-labelledby="received-delivery-tab">
+      <%= render partial: 'user/deliveries/view_detail_delivery', locals: {records: @deliveries.where(status: 'received')}%>
+    </div>
+    <div class="tab-pane fade" id="cancelled-delivery" role="tabpanel" aria-labelledby="cancelled-delivery-tab">
+      <%= render partial: 'user/deliveries/view_detail_delivery', locals: {records: @deliveries.where(status: 'cancelled')}%>
+    </div>
+  </div>
+</div>
+

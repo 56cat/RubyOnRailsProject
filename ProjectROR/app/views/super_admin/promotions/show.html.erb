@@ -1,0 +1,55 @@
+<div class='card'>
+  <div class='card-body'>
+     <h4>Thông tin chi tiết</h4>
+    <div class='row'>
+      <div class='col-6'>
+        <p>Tên khuyến mãi: <strong><%= @promotion.name %></strong></p>
+        <p>Mã khuyến mãi: <strong><%= @promotion.code %></strong></p>
+      </div>
+      <div class='col-6'>
+        <p>Thời gian bắt đầu: <strong><%= @promotion.start&.strftime("%d/%m/%Y") %></strong></p>
+        <p>Thời gian kết thúc: <strong><%= @promotion.end&.strftime("%d/%m/%Y") %></strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='card'>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4>Lịch sử sử dụng</h4>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Người sử dụng</th>
+        <th scope="col">Hóa đơn</th>
+        <th scope="col">Thời gian sử dụng</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% if @promotion_histories.present? %>
+        <% @promotion_histories.each_with_index do |promotion_history, index| %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td><%= promotion_history.user.name %></td>
+            <td><%= promotion_history.bill.code %></td>
+            <td><%= promotion_history.created_at&.strftime("%d/%m/%Y") %></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="5" class='text-center'>Mã khuyễn mãi chưa được sử dụng</td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <% if @promotion_histories.present? %>
+      <div class='d-flex justify-content-end'>
+        <%= paginate @promotion_histories, theme: 'twitter-bootstrap-3' %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,3 @@
+module BillsHelper
+
+end

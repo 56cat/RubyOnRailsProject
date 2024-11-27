@@ -1,0 +1,10 @@
+var old_height = $('#list-messages').height();
+var old_scroll = $('.chat-history').scrollTop();
+$('#list-messages').prepend('<%= j render partial: 'user/messages/content' %>');
+<% if @messages.next_page %>
+$('.pagination').replaceWith('<%= j paginate @messages %>');
+$('.chat-history').scrollTop(old_scroll + $('#list-messages').height() - old_height)
+<% else %>
+$(window).off('scroll');
+$('.pagination').remove();
+<% end %>

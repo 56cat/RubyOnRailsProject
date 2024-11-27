@@ -1,0 +1,50 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <%= link_to supplier_root_path, class: 'sidebar-brand d-flex align-items-center justify-content-center' do %>
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-laugh-wink"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">Admin</div>
+  <% end %>
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <%= link_to supplier_root_path, class: 'nav-link' do %>
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Trang chủ</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+       aria-expanded="true" aria-controls="collapseUtilities">
+      <i class="fas fa-fw fa-wrench"></i>
+      <span>Sản phẩm</span>
+    </a>
+    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+         data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Sản phẩm</h6>
+        <%= link_to 'Danh sách sản phẩm', supplier_products_path, class: 'collapse-item' %>
+        <%= link_to 'Danh sách File csv',supplier_csv_queues_path, class: 'collapse-item' %>
+        <%= link_to 'Kho sản phẩm',supplier_inventory_products_path, class: 'collapse-item' %>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <%= link_to supplier_export_notes_path, class: 'nav-link' do %>
+      <i class="fa-solid fa-file"></i>
+      <span>Phiếu xuất/nhập</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to supplier_deliveries_path, class: 'nav-link' do %>
+      <i class="fa-solid fa-truck"></i>
+      <span>Đơn hàng</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to supplier_conversations_path, class: 'nav-link' do %>
+      <i class="fa-solid fa-comments"></i>
+      <span>Hỗ trợ khách hàng</span>
+    <% end %>
+  </li>
+</ul>

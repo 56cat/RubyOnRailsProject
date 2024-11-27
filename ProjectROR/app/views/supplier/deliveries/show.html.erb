@@ -1,0 +1,87 @@
+<div class='card'>
+  <div class='card-body'>
+    <div class='row'>
+      <div class='col-6'>
+        <strong>Trạng thái:</strong>
+        <span id='current-status-delivery'> <%= delivery_status(@delivery.status) %></span>
+        <br>
+        <% if @delivery.status == 'cancelled' %>
+          <small class="font-italic">
+            <strong>Lý do hủy:</strong>
+            <span id='current-status-delivery'> <%= @delivery.reason %></span>
+          </small>
+        <% end %>
+      </div>
+      <div class='col-6 d-flex justify-content-end'>
+        <span id='link-to-next-status-delivery'>  <%= link_to_status(current_user, @delivery) %></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='card mt-4'>
+  <div class='card-body'>
+    <div class='row'>
+      <div class='col-12'>
+        <h4 class="">Chi tiết đơn hàng</h4>
+      </div>
+    </div>
+    <div class='row my-2'>
+      <div class='col-6'>
+        <p><strong>Khách hàng</strong>: <span><%= @delivery.bill&.user&.name %></span></p>
+        <p><strong>Hóa đơn</strong>: <span><%= @delivery.bill&.code %></span></p>
+        <p><strong>Mã vận chuyển</strong>: <span><%= @delivery.code %></span></p>
+      </div>
+      <div class='col-6'>
+        <p><strong>Số điện thoại</strong>: <span><%= @delivery.phone %></span></p>
+        <p><strong>Địa chỉ</strong>: <span><%= @delivery.address %></span></p>
+        <p><strong>Ghi chú</strong>: <span><%= @delivery.note %></span></p>
+      </div>
+    </div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <td>STT</td>
+        <td>Tên sản phẩm</td>
+        <td>Đơn giá</td>
+        <td>Số lượng</td>
+        <td>Giảm giá</td>
+        <td>Thành tiền</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td colspan="7">Danh sách sản phẩm</td>
+      </tr>
+      <% @delivery.line_items.includes(target: :product).each_with_index do |line_item, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= line_item.target.product&.name %></td>
+          <td><%= format_currency(line_item.price) %></td>
+          <td><%= line_item.quantity %></td>
+          <td>
+            <%= format_currency(line_item.discount) %><br>
+            <small class="font-italic">Mã giảm giá:<%= line_item.promotion&.code %></small>
+          </td>
+          <td><%= format_currency(line_item.amount) %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="5" class="text-center"><strong>Tổng tiền</strong></td>
+        <td>
+          <h5><%= format_currency(@delivery.amount) %></h5>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%= render partial: 'modal/cancel_delivery' %>
+<script>
+    $(document).on('click', '#link-to-modal-cancel', function (e){
+        e.preventDefault();
+        e.stopPropagation();
+        jQuery.noConflict();
+        $('#cancelModal').find('form').attr('action', $(this).data('href'))
+        $('#cancelModal').modal('show')
+    })
+</script>

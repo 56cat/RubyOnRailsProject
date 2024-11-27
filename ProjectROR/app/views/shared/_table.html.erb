@@ -1,0 +1,19 @@
+<% if defined?(hidden_search) && hidden_search %>
+
+  <% else %>
+  <%= render partial: 'shared/search_form',
+             locals: {
+               records: records,
+               namespace: namespace,
+               default_query: default_query
+             } %>
+<% end %>
+
+<div class="table-data">
+ <%= render partial: 'shared/table_data',
+            locals: {
+              records: records,
+              namespace: namespace,
+              default_query: @default_query
+            } %>
+</div>

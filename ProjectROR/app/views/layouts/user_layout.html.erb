@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%= render 'layouts/head' %>
+<body>
+<!-- Navigation-->
+<%= render 'layouts/alert' %>
+
+<%= render 'layouts/user/header' %>
+<!-- Section-->
+<section class="py-5">
+  <%= yield %>
+</section>
+<% unless  controller_name == 'conversations' %>
+  <%= render partial: 'shared/bubble_chat', locals: {
+    conversations: current_user.conversations
+  } %>
+<% end %>
+
+<%= render 'layouts/modal' %>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<div class='card'>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4>Hóa Đơn</h4>
+      </div>
+    </div>
+    <%= render partial: 'shared/table',
+               locals: {
+                 records: @bills,
+                 namespace: controller.class.module_parent,
+                 default_query: @default_query
+               } %>
+  </div>
+</div>

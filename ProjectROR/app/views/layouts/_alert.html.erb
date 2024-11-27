@@ -1,0 +1,28 @@
+<div class="notify position-absolute" style="top: 5%; right: 5%; z-index: 9999">
+  <div class="card-container">
+    <% if notice  || params[:notice] %>
+      <div class="alert card alert-info alert-dismissible " role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <div class="media">
+          <div class="media__bd">
+            <p class="user__sender">Thông báo</p>
+            <p class="user__description"><%= notice%></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if alert || params[:alert]  %>
+      <div class="alert card alert-danger alert-dismissible"  role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <div class="media">
+          <div class="media__bd">
+            <p class="user__sender">Thông báo</p>
+            <p class="user__description"><%= alert %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,121 @@
+<%= form_for [:user, @bill], remote: true do |f| %>
+  <section class="h-100 h-custom" style="background-color: #d2c9ff;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-8">
+                <div class="p-5">
+                  <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h1 class="fw-bold mb-0 text-black">Giỏ hàng</h1>
+                    <h6 class="mb-0 text-muted"><span class="" id='total-items'></span> sản phẩm</h6>
+                  </div>
+                  <div class="row mb-4 d-flex justify-content-between align-items-center text-primary">
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <h6 class="text-primary">Tên sản phẩm</h6>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                      Đơn giá
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-2 text-center">
+                      Số lượng
+                    </div>
+                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                      Thành tiền
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+
+                    </div>
+                  </div>
+                  <hr class="my-4">
+                  <div class="" id='line-item-product'>
+
+                  </div>
+                  <div class="pt-5">
+                    <h6 class="mb-0">
+                      <%= link_to 'Danh sách sản phẩm', user_products_path, class: 'text-body' %>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+
+                <div class="col-lg-4 bg-grey">
+                  <div class="p-5">
+                    <h4 class="fw-bold mt-2 pt-1">Thông tin thanh toán</h4>
+                    <hr class="my-4">
+                    <div class='delivery-info'>
+                      <%= f.fields_for :deliveries do |delivery| %>
+                        <div class='form-group'>
+                          <%= delivery.label :phone, 'Số điện thoại', class: 'required' %>
+                          <%= delivery.text_field :phone,
+                                                  class: 'form-control ',
+                                                  required: true,
+                                                  value: current_user.phone,
+                                                  id: "delivery-phone" %>
+                        </div>
+                        <div class="form-group">
+                          <%= delivery.label :address, 'Địa chỉ nhận hàng', class: 'required'  %>
+                          <%= delivery.text_field :address,
+                                                  class: 'form-control ',
+                                                  required: true,
+                                                  value: current_user.address,
+                                                  id: "delivery-address"
+                          %>
+                        </div>
+                        <div class='form-group'>
+                          <%= delivery.label :note, 'Ghi chú' %>
+                          <%= delivery.text_field :note, class: 'form-control ',id: "delivery-note" %>
+                        </div>
+
+                      <% end %>
+                    </div>
+
+                    <div class='form-group'>
+                      <%= f.label :payment_method, 'Thanh toán' %>
+                      <%= f.select :payment_method,
+                                   [["Tiền mặt", "cod"], ["Chuyển khoản", "transfer"]],
+                                   {
+                                     :include_blank => false
+                                   },
+                                   {
+                                     class: "form-control"
+                                   } %>
+                    </div>
+                    <div class='form-group'>
+                      <%= f.label :promotion_id, 'Mã khuyến mại' %>
+                      <%= f.select :promotion_id,
+                                   @promotion.map{|p| [p.code, p.id , {
+                                     "data-promotion": p.to_json
+                                   }]},
+                                   {
+                                     :include_blank => true
+                                   },
+                                   {
+                                     id: 'promotion',
+                                     class: "form-control "
+                                   } %>
+                    </div>
+
+                    <hr class="my-4">
+                    <div class="d-flex justify-content-between mb-5">
+                      <h5 class="text-uppercase">Tổng tiền</h5>
+                      <h5 id="total_payment"></h5>
+                    </div>
+                    <%= f.hidden_field :amount %>
+                    <%= f.hidden_field :total %>
+                    <%= f.hidden_field :user_id, value: current_user.id %>
+                    <%= f.hidden_field :discount %>
+
+                    <%= f.submit 'Thanh toán', class: 'btn btn-dark btn-block btn-lg' %>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% end %>

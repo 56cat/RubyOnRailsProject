@@ -1,0 +1,66 @@
+<table class="table">
+  <% if defined?(records) && records.present? %>
+    <%
+      model = records.klass.name.camelize.constantize
+      column_attributes = model.const_defined?("COLUMN_ATTRIBUTE_#{current_user.role.upcase}") ? model.const_get("COLUMN_ATTRIBUTE_#{current_user.role.upcase}") : ''
+      action = model.const_defined?("ACTION_#{current_user.role.upcase}") ? model.const_get("ACTION_#{current_user.role.upcase}") : ''
+    %>
+    <thead>
+    <tr>
+      <% if column_attributes.present? %>
+        <% column_attributes.each do |field| %>
+          <% if field[:sort_by].present? %>
+            <th scope="col"><%= sort_link(@search,
+                                          field[:sort_by],
+                                          field[:label],
+                                          remote: true,
+                                          href: search_path(
+                                            model: records.klass.name,
+                                            limit: params[:limit],
+                                            namespace: namespace,
+                                            q:  defined?(query) && query.present? ? query.merge({s: "#{field[:sort_by]} #{
+                                              if query["s"].present?
+                                                query["s"].to_s.split(/\s+/)[1] == 'asc' ? 'desc' : 'asc'
+                                              else
+                                                "asc"
+                                              end}"}) : { s: "#{field[:sort_by]} asc"} ) ) %>
+            </th>
+          <% else %>
+            <th scope="col"><%= field[:label] %></th>
+          <% end %>
+        <% end %>
+        <td></td>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% records.each_with_index do |record, index| %>
+      <tr>
+        <% if column_attributes.present? %>
+          <% column_attributes.each do |field| %>
+            <td><%= render_row_data(record.public_send(field[:column]), field[:data_type]) %></td>
+          <% end %>
+        <% end %>
+        <% if action.present? %>
+          <td>
+            <% if action.include?('edit') %>
+              <%= link_to '<i class="fa-solid fa-pen-to-square"></i>'.html_safe, public_send("edit_#{namespace.to_s.underscore.downcase}_#{records.klass.name.underscore}_path", record) %>
+            <% end %>
+            <% if action.include?('show') %>
+              <%= link_to '<i class="fa-solid fa-eye"></i>'.html_safe, public_send("#{namespace.to_s.underscore.downcase}_#{records.klass.name.underscore}_path", record) %>
+            <% end %>
+            <% if action.include?('delete') %>
+              <%= link_to '<i class="fa-solid fa-trash"></i>'.html_safe, public_send("#{namespace.to_s.underscore.downcase}_#{records.klass.name.underscore}_path", record), method: :delete, data: { confirm: 'Bạn có chắc không' } %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  <% else %>
+    <tr>
+      <th scope="row">Không có dữ liệu</th>
+    </tr>
+  <% end %>
+</table>
+<%= render partial: "shared/pagination_table", locals: { records: records, namespace: namespace, default_query: default_query, query: defined?(query) && query.present? ? query : nil } %>

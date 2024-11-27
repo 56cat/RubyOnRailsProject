@@ -1,0 +1,51 @@
+<div class='card'>
+  <div class='card-body'>
+    <h4>Thông tin sản phẩm</h4>
+    <div class='row mt-2'>
+      <div class='col-6'>
+        <p><strong>Tên sản phẩm: </strong><%= @inventory_product.product&.name %></p>
+        <p><strong>Số lượng trong kho: </strong><%= @inventory_product.quantity %></p>
+        <p><strong>Giá bán: </strong><%= format_currency(@inventory_product.sell_price) %></p>
+      </div>
+      <div class='col-6'>
+        <p><strong>Cập nhật gần nhất: </strong><%= @inventory_product.updated_at.strftime('%H:%M %d/%m/%Y') %></p>
+        <p><strong>Người cập nhật: </strong><%= @inventory_product.updater&.name %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card mt-4">
+  <div class='card-body'>
+    <h4>Lịch sử xuất/nhập</h4>
+    <table class='table table-bordered table-hover'>
+      <thead>
+        <tr>
+          <td>Hành động</td>
+          <td>Số lượng</td>
+          <td>Giá</td>
+          <td>Phiếu xuất/nhập</td>
+          <td>Ghi chú</td>
+          <td>Người cập nhật</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @import_export_product_histories.present? %>
+          <% @import_export_product_histories.each do |import_export_product_history| %>
+            <tr>
+              <td><%= t("import_export_product_history.action.#{import_export_product_history.action}") %></td>
+              <td><%= import_export_product_history.quantity %></td>
+              <td><%= format_currency(import_export_product_history.buy_price) %></td>
+              <td><%= import_export_product_history.target_type == 'ExportNote' ? import_export_product_history.target.code : import_export_product_history.target&.owner&.code  %></td>
+              <td><%= import_export_product_history.note %></td>
+              <td><%= import_export_product_history.updater&.name %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="6" class='text-center'>Chưa có lịch sử xuất/nhập</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

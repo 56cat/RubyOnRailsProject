@@ -1,0 +1,7 @@
+vi:
+  product:
+    csv:
+      status:
+        processing: Đang xử lý
+        completed: Thành công
+        failed: Lỗi

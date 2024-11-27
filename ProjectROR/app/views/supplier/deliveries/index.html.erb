@@ -1,0 +1,38 @@
+<div class='card'>
+  <div class='card-body'>
+    <h4>Danh sách đơn hàng</h4>
+    <%= render partial: 'shared/table',
+               locals: {
+                 records: @deliveries,
+                 namespace: controller.class.module_parent,
+                 default_query: @default_query
+               } %>
+<!--    <table class='table table-bordered table-hover'>-->
+<!--      <thead>-->
+<!--        <tr class="text-center">-->
+<!--          <th>Mã hóa đơn</th>-->
+<!--          <th>Mã đơn hàng</th>-->
+<!--          <th>Khách hàng</th>-->
+<!--          <th>Hình thức thanh toán</th>-->
+<!--          <th>Số tiền phải trả</th>-->
+<!--          <th>Trạng thái</th>-->
+<!--          <th></th>-->
+<!--        </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+      <%# @deliveries.each do |delivery| %>
+<!--        <tr class="text-center" id='delivery<%#= delivery.id %>'>-->
+<!--          <td><%#= delivery.bill&.code %></td>-->
+<!--          <td><%#= delivery.code %></td>-->
+<!--          <td><%#= delivery.bill&.user&.name %></td>-->
+<!--          <td><%#= payment_method(delivery.bill&.payment_method) %></td>-->
+<!--          <td><%#= number_to_currency(delivery.bill_paid, {locale: :vi, unit: 'đ', precision: 0}) %></td>-->
+<!--          <td class="delivery-status"><%#= delivery_status(delivery.status) %></td>-->
+<!--          <td><%#= link_to '<i class="fa-solid fa-eye"></i>'.html_safe, supplier_delivery_path(delivery) %></td>-->
+<!--        </tr>-->
+
+      <%# end %>
+<!--      </tbody>-->
+<!--    </table>-->
+  </div>
+</div>

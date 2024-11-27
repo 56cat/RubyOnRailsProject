@@ -1,0 +1,7 @@
+vi:
+  users:
+    role:
+      super_admin: Quản trị viên
+      supplier: Đại lý
+      client: Nhà phân phối
+      user: Khách hàng

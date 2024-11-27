@@ -1,0 +1,55 @@
+<% if defined?(records) && records.present? %>
+  <%= search_form_for @search,
+                      url: search_path(limit: params[:limit] || 5, model: records.klass.name, namespace: namespace),
+                      remote: true,
+                      id: 'search_form',
+                      method: :post do |f| %>
+<!--      <div class='row my-3'>-->
+<!--        <div class="col-12">-->
+<!--          <div class='form-group'>-->
+<!--            <div class="input-group mb-3">-->
+              <%#= search_for_ransack(records, @search_attributes)%>
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+    <% if @search_fields.present? %>
+      <div class='row my-3'>
+        <div class="col-5">
+          <div class='form-group'>
+            <div class="input-group mb-3">
+              <%= f.text_field "#{@search_fields}_cont", class: 'form-control search-field' %>
+              <div class="input-group-append">
+                <button type='submit'  class="btn btn-light submit-form">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if defined?(default_query) && default_query.present? %>
+      <% default_query.each do |k, v| %>
+        <%= f.hidden_field k, class: 'form-control search-field', value: v %>
+      <% end %>
+    <% end %>
+    <% if @filter_fields.present? %>
+      <div class='row mb-3'>
+        <% @filter_fields.each do |filter| %>
+          <label style="width: auto"><%= filter[:label] %></label>
+          <%= f.select filter[:id], filter[:options],
+                       {
+                         include_blank: true
+                       },
+                       {
+                         class: 'form-control filter-select',
+                         style: 'display: inline-block;width: auto'
+                       } %>
+
+        <% end %>
+      </div>
+    <% end %>
+    <%= f.submit "search", class: "btn btn-info submit-form", style: "display: none; margin-right: 10px" %>
+  <% end %>
+<% end %>

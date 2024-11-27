@@ -1,0 +1,29 @@
+<div class='card'>
+  <div class='card-body'>
+    <h2>Danh sách File</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Tên file</th>
+          <th scope="col">Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @csv_queues.each do |csv| %>
+        <tr>
+          <td>
+            <% if csv.status == 'completed' %>
+              <%= link_to csv.file_name, url_for(controller: 'csv_queues', action: 'export', file_name: csv.file_name) %>
+            <% else %>
+              <span><%= csv.file_name %></span>
+            <% end %>
+          </td>
+          <td><%= t("product.csv.status.#{csv.status}") %></td>
+          <td><%= link_to '<i class="fa-solid fa-trash"></i>'.html_safe, super_admin_csv_queue_path(csv), method: :delete, data: { confirm: 'Bạn có chắc không' } %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

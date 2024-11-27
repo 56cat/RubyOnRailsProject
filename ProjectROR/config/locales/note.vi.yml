@@ -1,0 +1,11 @@
+vi:
+  note:
+    kind:
+      import_note: Phiếu nhập
+      export_note: Phiếu xuất
+      cancelled_note: Phiếu hủy
+    status:
+      exported: Đã xuất
+      received: Đã nhận
+      refund: Hoàn hàng
+      received_refund: Đã nhận hàng hoàn

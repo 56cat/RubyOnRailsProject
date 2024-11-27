@@ -1,0 +1,9 @@
+vi:
+  delivery:
+    status:
+      created: Chưa xác nhận
+      verified: Xác nhận
+      pickup: Đã giao cho đơn vị vận chuyển
+      transport: Đang vận chuyển
+      received: Đã nhận hàng
+      cancelled: Hủy

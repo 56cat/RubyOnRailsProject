@@ -1,0 +1,115 @@
+<%= form_for [:super_admin, @user] do |f| %>
+  <div class="row">
+    <div class="col-lg-5 d-none d-lg-block">
+      <%= image_tag f.object.image.persisted? ? f.object.image  : '', id: "preview-image", style: 'width: 100%; height: 90%;object-fit: contain' %>
+      <%= f.file_field :image, accept: "image/*", onchange: "loadFile(event)" %>
+    </div>
+    <div class="col-lg-7">
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <%= f.label :name, "Họ và tên", class: 'required' %>
+          <%= f.text_field :name,
+                           placeholder: "Họ và tên",
+                           class: 'form-control ',
+                           required: true
+          %>
+        </div>
+        <div class="col-sm-6 form-group">
+          <%= f.label :phone, "Số điện thoại", class: 'required' %>
+          <%= f.text_field :phone,
+                           placeholder: "Số điện thoại",
+                           class: "form-control", required: true %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 form-group">
+          <%= f.label :role, "Vai trò", class: 'required' %>
+          <%= f.select :role,
+                       User.roles.slice('super_admin', 'supplier', 'user').map { |k, v| ["#{t("users.role.#{k}")}", k] },
+                       {
+                         include_blank: false
+                       },
+                       {
+                         class: 'form-control' } %>
+        </div>
+        <div class="col-6 form-group">
+          <%= f.label :brand_id, "Tên nhà cung cấp/phân phối" %>
+          <%= f.select :brand_id, Brand.all.map { |c| [c.name, c.id, { data: { kind: c.kind }}] },
+                       {
+                         include_blank: true
+                       },
+                       {
+                         class: 'form-control',
+                         disabled: %w[super_admin user].include?(f.object.role) || f.object.new_record?,
+                         required: %w[admin client].include?(f.object.role)
+                       } %>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="col-12 form-group">
+          <%= f.label :email, 'Email', class: 'required' %>
+          <%= f.email_field :email,
+                            placeholder: "Email",
+                            class: "form-control ",
+                            required: true
+          %>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="col-12 form-group">
+          <%= f.label :address, 'Địa chỉ' %>
+          <%= f.text_area :address,
+                          placeholder: "Địa chỉ",
+                          class: "form-control form-control-user" %>
+        </div>
+      </div>
+
+
+      <% unless @user.new_record? %>
+        <a class="mb-2" data-toggle="collapse" href="#changePassword" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Đổi mật khẩu
+        </a>
+        <div class="collapse row password-row mt-2" id="changePassword">
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <%= f.password_field :password,
+                                   placeholder: "Mật khẩu (Tối thiểu 6 ký tự)",
+                                   class: "form-control form-control-user"
+              %>
+            </div>
+            <div class="col-sm-6">
+              <%= f.password_field :password_confirmation,
+                                   placeholder: "Nhập lại mật khẩu",
+                                   class: "form-control form-control-user"
+              %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <%= f.submit "Cập nhật", class: 'btn btn-primary btn-user btn-block' %>
+    </div>
+  </div>
+<% end %>
+<script>
+    $(document).on('change', '#user_role', function () {
+        $("#user_brand_id").find("option").prop("disabled", true);
+        if ($(this).val() === 'supplier' || $(this).val() === 'client') {
+            $('#user_brand_id').prop('disabled', false);
+            $('#user_brand_id').prop('required', true);
+            $("#user_brand_id").find("option").prop("disabled", false);
+
+        } else {
+            $('#user_brand_id').prop('disabled', true);
+            $('#user_brand_id').prop('required', false);
+
+        }
+    })
+    var loadFile = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview-image');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>

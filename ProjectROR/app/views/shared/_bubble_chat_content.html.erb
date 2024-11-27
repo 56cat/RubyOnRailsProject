@@ -1,0 +1,42 @@
+<div id="profile my-2">
+  <div id="close">
+    <i class="fa-solid fa-xmark"></i>
+  </div>
+  <div class='d-flex align-items-center justify-content-center mt-4'>
+    <img src="https://www.freeiconspng.com/uploads/retail-shop-icon-3.png" width="68" alt="Retail shop Icon"/>
+  </div>
+  <p class='text-center'>
+    <strong><%= current_user.user? ? @conversation.brand.name : @conversation.user.name %></strong>
+  </p>
+</div>
+<div id="chat-messages">
+  <%= render partial: 'shared/bubble_chat_message' %>
+</div>
+<div id="sendmessage">
+  <%= form_for Message.new, url: user_conversation_messages_path(@conversation), method: :post, remote: true do |f|  %>
+    <div class="input-group mb-0">
+      <%= f.text_area :content, class: 'form-control', rows: 1 %>
+      <%= f.hidden_field :conversation_id, value: @conversation.id %>
+      <div class="input-group-append">
+        <button type="submit" class="input-group-text">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>
+<script>
+    if ($('#chat-messages .pagination').length && $('#chat-messages').length) {
+        $('#chat-messages').on('scroll', function(){
+            let more_posts_url = $('#chat-messages .pagination .next_page a').attr('href');
+            if(more_posts_url) {
+                more_posts_url = more_posts_url;
+            } else {
+                more_posts_url= $('#chat-messages .pagination .next a').attr('href');
+            }
+            if (more_posts_url && $('#chat-messages').scrollTop()  === 0) {
+                $.getScript(more_posts_url);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,61 @@
+<% if records.present? %>
+  <% records.each do |delivery| %>
+    <div class='card my-3'>
+      <div class='card-header'>
+        <div class='row'>
+          <div class='col-6'>
+            <i class="fa-solid fa-shop"></i>
+            <span class='pl-1'><%= delivery.brand.name %></span>
+          </div>
+          <div class='col-6 d-flex justify-content-end text-primary'>
+            <%= t("delivery.status.#{delivery.status}") %>
+          </div>
+        </div>
+      </div>
+      <div class='card-body'>
+        <% delivery.line_items.where(brand_id: delivery.brand_id).each do |line_item| %>
+          <div class="card my-2">
+            <div class="row">
+              <div class="col-auto">
+                <img width="200" height="200" src="<%= line_item.target&.product&.images.present? ? url_for(line_item.target.product.images.first) : 'https://www.snexplores.org/wp-content/uploads/2022/10/1440_SS_fruit_feat.jpg' %>" class="img-fluid" alt="">
+              </div>
+              <div class="col d-flex align-items-center">
+                <div class="card-block px-2 ">
+                  <h4 class="card-title"><%= line_item.target&.product&.name %></h4>
+                  <p class="card-text">Số lượng: <%= line_item.quantity %></p>
+                  <p class="card-text">Giá: <%= format_currency(line_item.amount) %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class='card-footer'>
+        <div class='p-3'>
+          <div class='row'>
+            <div class='col-6'>
+              Tổng tiền
+              <strong><%= format_currency(delivery.amount) %></strong>
+            </div>
+            <div class='col-6 d-flex justify-content-end'>
+              <span id='link-to-next-status-delivery'>  <%= link_to_status(current_user, delivery) %></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <h4>Không có đơn hàng nào</h4>
+<% end %>
+<%= render partial: 'modal/cancel_delivery' %>
+<script>
+    $(document).on('click', '#link-to-modal-cancel', function (e){
+        e.preventDefault();
+        e.stopPropagation();
+        jQuery.noConflict();
+        $('#cancelModal').find('form').attr('action', $(this).data('href'))
+        $('#cancelModal').modal('show')
+    })
+</script>

@@ -1,0 +1,35 @@
+<div id="bubble-chat" style="bottom: 20px;right: 20px;position: fixed;z-index: 99999999;">
+  <div id="chatbox" style="display: none">
+    <div id="friendslist">
+      <div id="friends">
+        <% if defined?(conversations) && conversations.present? %>
+          <% conversations.each do |conversation| %>
+            <%= link_to public_send("get_messages_#{current_user.role}_conversation_path", conversation), remote: true do %>
+              <div class="friend chat-content" id='chat-content' data-conversation-id="<%= conversation.id %>">
+                <img src="https://www.freeiconspng.com/uploads/retail-shop-icon-3.png" width="68" alt="Retail shop Icon"/>
+                <p>
+                  <strong class="d-block"><%= current_user.user? ? conversation.brand.name : conversation.user.name %></strong>
+                  <small><%= conversation.messages&.first&.user_id == current_user.id ? "Bạn: " : "" %><%= conversation.messages&.first&.content %></small>
+                </p>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class='text-center'>
+            <strong>Chưa có cuộc hội thoại nào</strong>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div id="chatview" class="">
+    </div>
+  </div>
+  <div class="button-chatbox cursor-point" style="cursor: pointer;">
+    <div class="position-relative">
+      <img src="https://www.freeiconspng.com/uploads/retail-shop-icon-3.png" width="60" alt="Retail shop Icon"/>
+      <span class=" close-button-chatbox" style="cursor: pointer; position: absolute; top: -10px; right: 0"><i class="fa-solid fa-circle-xmark"></i></span>
+    </div>
+  </div>
+</div>
+
+

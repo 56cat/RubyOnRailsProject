@@ -1,0 +1,79 @@
+<header class="bg-success py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Shop in style</h1>
+      <p class="lead fw-normal text-white-50 mb-0"></p>
+    </div>
+  </div>
+</header>
+<div class="container px-4 px-lg-5 mt-5">
+  <%= search_form_for @search,
+                      url: user_products_path,
+                      id: 'search_form' do |f| %>
+    <div class='row'>
+      <h4>Tìm kiếm</h4>
+      <div class='col-6 input-group'>
+        <%= f.search_field :product_name_cont, class: 'form-control' %>
+        <div class="input-group-append">
+          <%= f.submit "Tìm kiếm" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class='row my-5'>
+    <div class='col-6'>
+      <h4>Sắp xếp theo</h4>
+      <%= sort_link(@search, :quantity, "Số lượng", class: 'btn btn-light') %>
+      <%= sort_link(@search, :sell_price, "Giá", class: 'btn btn-light') %>
+    </div>
+    <div class='col-6 d-flex justify-content-end'>
+      <div >
+        <h4>Đại lý</h4>
+
+        <% InventoryProduct.where.not(quantity: 0).pluck(:brand_id).uniq.each do |brand_id| %>
+          <% brand = Brand.find_by(id: brand_id) %>
+          <%= link_to brand.name, user_products_path(q: { brand_id_eq: brand_id }), class: 'btn btn-light' %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+  <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <% @inventory_products.each do |inventory_product| %>
+      <div class="col mb-5">
+        <div class="card h-100">
+          <img class="card-img-top" src="<%= inventory_product.product.images.present? ? url_for(inventory_product.product.images.first) : 'https://www.snexplores.org/wp-content/uploads/2022/10/1440_SS_fruit_feat.jpg' %>" alt="..."/>
+          <div class="card-body p-4">
+            <div class="text-center">
+              <h5 class="fw-bolder"><%= inventory_product.product.name %></h5>
+              <p>Giá: <%= format_currency(inventory_product.sell_price) %></p>
+              <p>Số lượng: <%= inventory_product.quantity %></p>
+              <p>Đại lý: <%= inventory_product.brand.name %></p>
+            </div>
+          </div>
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <%= link_to '<i class="fa-solid fa-cart-plus"></i>'.html_safe,
+                          "",
+                          class: "btn btn-outline-dark mt-auto",
+                          id: "add-to-cart",
+                          "data-product": inventory_product.slice("id", "product_id", "sell_price", "quantity", "brand_id").merge({ product_name: inventory_product.product.name }).to_json %>
+              <%= link_to '<i class="fa-solid fa-comment"></i>'.html_safe,
+                          user_conversations_path(brand_id: inventory_product.brand_id),
+                          method: :post,
+                          class: "btn btn-outline-dark mt-auto",
+                          remote: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <% if @inventory_products.present? %>
+    <div class='d-flex justify-content-end'>
+      <%= paginate @inventory_products, theme: 'twitter-bootstrap-3' %>
+    </div>
+  <% end %>
+</div>
+

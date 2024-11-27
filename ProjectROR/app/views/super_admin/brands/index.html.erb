@@ -1,0 +1,20 @@
+<div class='card'>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <h4>Danh sách đại lý</h4>
+      </div>
+      <div class="col-6 d-flex justify-content-end align-items-center">
+        <%= link_to new_super_admin_brand_path, class: 'btn btn-primary ' do %>
+          <i class="fa-solid fa-plus mr-2"></i>Tạo mới
+        <% end %>
+      </div>
+    </div>
+    <%= render partial: 'shared/table',
+               locals: {
+                 records: @brands,
+                 namespace: controller.class.module_parent,
+                 default_query: @default_query
+               } %>
+  </div>
+</div>

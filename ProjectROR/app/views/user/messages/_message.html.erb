@@ -1,0 +1,30 @@
+<div class="chat" id='chat-content' data-conversation-id='<%= @conversation.id %>' data-user-id='<%= current_user.id %>'>
+  <div class="chat-header clearfix">
+    <div class="row">
+      <div class="col-lg-6  d-flex align-items-center">
+        <img src="https://www.freeiconspng.com/uploads/retail-shop-icon-3.png" width="350" alt="Retail shop Icon"/>
+        <div class="chat-about">
+          <h6 class="m-b-0"><%= @conversation.brand.name %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chat-history">
+    <ul class="m-b-0" id='list-messages'>
+      <%= render partial: 'user/messages/content' %>
+    </ul>
+  </div>
+  <div class="chat-message clearfix">
+    <%= form_for Message.new, url: user_conversation_messages_path(@conversation), method: :post, remote: true do |f|  %>
+      <div class="input-group mb-0">
+        <%= f.text_area :content, class: 'form-control', rows: 1 %>
+        <%= f.hidden_field :conversation_id, value: @conversation.id %>
+        <div class="input-group-append">
+          <button type="submit" class="input-group-text">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+  <% end %>
+  </div>
+</div>

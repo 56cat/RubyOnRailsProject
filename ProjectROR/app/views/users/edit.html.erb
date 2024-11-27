@@ -1,0 +1,72 @@
+<div class='card'>
+  <div class='card-body'>
+    <h2>Cập nhật thông tin</h2>
+    <%= form_for @user do |f| %>
+      <div class="card o-hidden border-0 shadow-lg">
+        <div class="card-body p-0">
+          <div class="row">
+            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Cập nhật thông tin</h1>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <%= f.text_field :name,
+                                     placeholder: "Họ và tên",
+                                     class: 'form-control form-control-user'
+                    %>
+                  </div>
+                  <div class="col-sm-6">
+                    <%= f.text_field :phone,
+                                     placeholder: "Số điện thoại",
+                                     class: "form-control form-control-user" %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.email_field :email,
+                                    placeholder: "Email",
+                                    class: "form-control form-control-user" %>
+                </div>
+                <div class="form-group">
+                  <%= f.text_area :address,
+                                    placeholder: "Địa chỉ",
+                                    class: "form-control form-control-user" %>
+                </div>
+                <a class="mb-2" data-toggle="collapse" href="#changePassword" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  Đổi mật khẩu
+                </a>
+                <div class="collapse row password-row mt-2" id="changePassword">
+                  <div class='form-group row'>
+                    <div class='col-sm-6'>
+                      <%= f.password_field :old_password,
+                                           placeholder: 'Mật khẩu cũ',
+                                           class: 'form-control'
+                      %>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <%= f.password_field :password,
+                                           placeholder: "Mật khẩu (Tối thiểu 6 ký tự)",
+                                           class: "form-control form-control-user"
+                      %>
+                    </div>
+                    <div class="col-sm-6">
+                      <%= f.password_field :password_confirmation,
+                                           placeholder: "Nhập lại mật khẩu",
+                                           class: "form-control form-control-user"
+                      %>
+                    </div>
+                  </div>
+                </div>
+                <%= f.submit "Cập nhật", class: 'btn btn-primary btn-user btn-block' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

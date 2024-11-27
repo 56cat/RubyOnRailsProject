@@ -1,0 +1,41 @@
+<%= form_for [:supplier, ExportNote.new], url: supplier_import_export_histories_path, method: :post do |uf| %>
+  <div class='card mt-3'>
+    <div class='card-body'>
+      <h5>Thông tin chung</h5>
+      <div class='form-group'>
+        <div class='col-12'>
+          <%= uf.label :note, "Ghi chú đơn nhập" %>
+          <%= uf.text_area :note, class:'form-control'  %>
+          <%= uf.hidden_field :import_brand_id, value: current_brand.id %>
+          <%= uf.hidden_field :status, value: 'received' %>
+          <%= uf.hidden_field :receiver_id, value: current_user.id %>
+          <%= uf.hidden_field :kind, value: 'import_note'%>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='list-product-import'>
+    <%= uf.fields_for :import_export_histories do |f| %>
+      <%= render partial: 'import_export_history_fields', locals: { f: f } %>
+    <% end %>
+  </div>
+
+  <%= link_to_add_association ("<i class='fa fa-plus-circle' aria-hidden='true'></i>Thêm sản phẩm").html_safe,
+                              uf,
+                              :import_export_histories,
+                              class: "d-block mt-3",
+                              'data-association-insertion-node' => '.list-product-import',
+                              partial: 'supplier/import_export_histories/import_export_history_fields',
+                              'data-association-insertion-method' => 'append'
+  %>
+  <div class="card">
+    <div class='card-body'>
+      <div class=' d-flex align-items-center justify-content-center'>
+        <%= uf.submit "Nhập hàng", class: 'btn btn-success' %>
+        <%= link_to 'Hủy', supplier_inventory_products_path, class: 'btn btn-secondary mx-3', data: { confirm: 'Bạn có chắc không' } %>
+      </div>
+    </div>
+  </div>
+
+<% end %>
